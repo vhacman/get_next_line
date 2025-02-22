@@ -85,12 +85,12 @@ char	*read_and_update(int fd, char *raw_input_data)
 * 3. Extract complete extracted_line
 * 4. Return extracted_line & store remainder
 * 5. Handle EOF/errors */
-char   *get_next_extracted_line( fd)
+char   *get_next__line( fd)
 {
 	static char   *raw_input_data;
 	char          *stored_data;
 
-	if (fd < 0 || raw_raw_input_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	raw_input_data = read_and_update(fd, raw_input_data);
 	if (!raw_input_data)
