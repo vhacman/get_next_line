@@ -21,7 +21,7 @@ size_t  ft_strlen(const char *str)
                 return (0);
         while (str[i])
                 i++;
-        return (i)
+        return (i);
 }
 
 /* la funzione cerca la prima occorrenza del carattere 'c'
@@ -49,7 +49,10 @@ char	*ft_strcpy(char *dest, const char *src)
 
 	i = 0;
 	while (src[i] != '\0')
-		dest[i] = src[i++];
+	{
+		dest[i] = src[i];
+		i++;
+	}
 	dest[i] = '\0';
 	return (dest);
 }
@@ -66,7 +69,7 @@ char	*ft_strjoin(char const *string_1, char const *string_2)
 		return (NULL);
         len_1 = ft_strlen(string_1);
         len_2 = ft_strlen(string_2);
-	new_str = (char *)malloc(sizeof(*string_1) * (len_1 + len_2 + 1));
+	new_str = (char *)malloc(sizeof(char) * (len_1 + len_2 + 1));
 	if (!new_str)
 		return (NULL);
 	i = 0;

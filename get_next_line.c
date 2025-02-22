@@ -1,21 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_extracted_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 16:56:15 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/22 16:56:15 by vhacman          ###   ########.fr       */
+/*   Created: 2025/02/22 19:05:39 by vhacman           #+#    #+#             */
+/*   Updated: 2025/02/22 19:05:39 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*ft_strdup(const char *s1)
+{
+	char	*s2;
+	size_t	len;
+
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	if (len + 1 == 0)
+		return (NULL);
+	s2 = (char *)malloc(sizeof(char) * (len + 1));
+	if (!s2)
+		return (NULL);
+	ft_strcpy(s2, s1);
+	return (s2);
+}
 /* Takes a string as input and returns its first line (until '\n' or end).
 ** Modifies input string by removing extracted line from the beginning.
 ** Returns NULL if input is invalid or malloc fails.
 ** Line returned includes '\n' if present. */
+
 char	*extract_line(char *raw_input)
 {
 	char	*line;
@@ -23,25 +40,27 @@ char	*extract_line(char *raw_input)
 	size_t	len;
 	size_t	i;
 
+	i = 0;
 	if (!raw_input || raw_input[i] == '\0')
 		return (NULL);
 	end = ft_strchr(raw_input, '\n');
 	if (end)
 		len = end - raw_input + 1;
-	else
-		len = ft_strlen(raw_input);
 	line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!line)
 		return (NULL);
 	i = 0;
 	while (i < len)
-		line[i] = raw_input[i++];
+	{
+		line[i] = raw_input[i];
+		i++;
+	}
 	line[i] = '\0';
 	i = 0;
 	if (end)
-		while (end[1 + i])
-			raw_input[i] = end[1 + i++];
-	raw_input[i] = '\0';
+		while (raw_input[++i + (end - raw_input)])
+			raw_input[i - 1] = raw_input[i + (end - raw_input)];
+	raw_input[i - 1] = '\0';
 	return (line);
 }
 
@@ -52,50 +71,71 @@ it returns the original string. If the raw_input string is NULL,
 it returns the data read directly.*/
 char	*read_and_update(int fd, char *raw_input_data)
 {
-	char	*raw_raw_input;
+	char	*raw_input;
 	char	*updated_data;
-	int	bytes_read;
-	
-	raw_raw_input = malloc(sizeof(char) * (raw_raw_input_SIZE + 1));
-	if (!raw_raw_input)
-		return (NULL);
-	bytes_read = read(fd, raw_raw_input, raw_raw_input_SIZE);
-	if (bytes_read <= 0)
+	int		bytes_read;
+
+	raw_input = malloc(BUFFER_SIZE + 1);
+	if (!raw_input)
+		return (free(raw_input_data), NULL);
+	bytes_read = read(fd, raw_input, BUFFER_SIZE);
+	if (bytes_read < 0)
 	{
-		free(raw_raw_input);
-		return (raw_input_data);
+		free(raw_input);
+		free(raw_input_data);
+		return (NULL);
 	}
-	raw_raw_input[bytes_read] = '\0';
+	if (bytes_read == 0)
+		return (free(raw_input), raw_input_data);
+	raw_input[bytes_read] = '\0';
 	if (!raw_input_data)
-		return (raw_raw_input);
-	updated_data = ft_strjoin(raw_input_data, raw_raw_input);
-	free (raw_raw_input);
-	free (raw_input_data);
+		return (raw_input);
+	updated_data = ft_strjoin(raw_input_data, raw_input);
+	free(raw_input);
+	free(raw_input_data);
 	return (updated_data);
 }
-/* TODO:
-* - Read one extracted_line at a time from fd (including STDIN)
-* - extracted_lines end with \n (except possible last extracted_line)
-* - Handle any file size
-* - Preserve data between calls for split extracted_lines
-* 
-* Implementation tasks:
-* 1. Read fd in raw_raw_input_SIZE chunks
-* 2. Accumulate data for split extracted_lines
-* 3. Extract complete extracted_line
-* 4. Return extracted_line & store remainder
-* 5. Handle EOF/errors */
-char   *get_next__line( fd)
+
+char	*read_buffer(int fd, char *raw_input_data)
 {
-	static char   *raw_input_data;
-	char          *stored_data;
+	char	*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	raw_input_data = read_and_update(fd, raw_input_data);
-	if (!raw_input_data)
+	temp = read_and_update(fd, raw_input_data);
+	if (!temp)
+	{
+		free(raw_input_data);
 		return (NULL);
-	stored_data = extract_extracted_line(raw_input_data);
-	raw_input_data = ft_strdup(raw_input_data + ft_strlen(stored_data));
+	}
+	return (temp);
+}
+
+char   *get_next_line(int fd)
+{
+	static char	*raw_input_data;
+	char		*stored_data;
+	char		*temp;
+		
+	while (!raw_input_data || !ft_strchr(raw_input_data, '\n'))
+	{
+		temp = read_buffer(fd, raw_input_data);
+		if (!temp)
+			return (NULL);
+		raw_input_data = temp;
+		if (!ft_strchr(raw_input_data, '\n')
+			&& ft_strlen(raw_input_data) < BUFFER_SIZE)
+			break;
+	}
+	stored_data = extract_line(raw_input_data);
+	if (!stored_data)
+	{
+		free(raw_input_data);
+		raw_input_data = NULL;
+		return (NULL);
+	}
+	temp = ft_strdup(raw_input_data + ft_strlen(stored_data));
+	free (raw_input_data);
+	raw_input_data = temp;
 	return (stored_data);
 }

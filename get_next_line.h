@@ -35,6 +35,11 @@ size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strjoin(char const *string_1, char const *string_2);
-char   *get_next_line( fd);
+char   *get_next_line(int fd);
 char	*read_and_update(int fd, char *input_data);
+char	*extract_line(char *raw_input);
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strdup(const char *s1);
+char	*read_buffer(int fd, char *raw_input_data);
+int   main();
 #endif
