@@ -37,7 +37,8 @@ char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char const *string_1, char const *string_2);
 char		*ft_strncpy(char *dest, const char *src, unsigned int n);
-void		extract_line_helper(char *end, char *remainder, char *raw_input,	char **raw_input_ptr, char *line);
+void		extract_line_helper(char *end, char *remainder, char *raw_input, char **raw_input_ptr, char *line);
+char    	*get_next_line_reader(int fd, char *raw_input_data);
 
 //int			main(void);
 
