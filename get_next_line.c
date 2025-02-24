@@ -91,27 +91,6 @@ char	*read_and_update(int fd, char *raw_input_data)
 ** Returns NULL at EOF or if an error occurs.
 ** Uses a static array to handle multiple file descriptors. */
 
-char	*get_next_line(int fd)
-{
-	static char	*raw_input_data;
-	char		*line;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	raw_input_data = get_next_line_reader(fd, raw_input_data);
-	if (!raw_input_data || !*raw_input_data)
-	{
-		if (raw_input_data)
-		{
-			free(raw_input_data);
-			raw_input_data = NULL;
-		}
-		return (NULL);
-	}
-	line = extract_line(&raw_input_data);
-	return (line);
-}
-
 char	*get_next_line_reader(int fd, char *raw_input_data)
 {
 	char	*read_done;
@@ -132,4 +111,25 @@ char	*get_next_line_reader(int fd, char *raw_input_data)
 		raw_input_data = read_done;
 	}
 	return (raw_input_data);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*raw_input_data;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	raw_input_data = get_next_line_reader(fd, raw_input_data);
+	if (!raw_input_data || !*raw_input_data)
+	{
+		if (raw_input_data)
+		{
+			free(raw_input_data);
+			raw_input_data = NULL;
+		}
+		return (NULL);
+	}
+	line = extract_line(&raw_input_data);
+	return (line);
 }
