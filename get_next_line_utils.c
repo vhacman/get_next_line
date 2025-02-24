@@ -77,11 +77,9 @@ char	*ft_strjoin(char const *string_1, char const *string_2)
 		return (NULL);
 	len_1 = ft_strlen(string_1);
 	len_2 = ft_strlen(string_2);
-	
 	new_str = (char *)malloc(sizeof(char) * (len_1 + len_2 + 1));
 	if (!new_str)
 		return (NULL);
-	
 	i = 0;
 	j = 0;
 	while (i < len_1)

@@ -37,14 +37,19 @@ char	*extract_line(char **raw_input_ptr)
 		return (NULL);
 	ft_strncpy(line, raw_input, line_len);
 	line[line_len] = '\0';
+	remainder = NULL;
+	extract_line_helper(end, remainder, raw_input, raw_input_ptr, line);
+	return (line);
+}
+
+void	extract_line_helper(char *end, char *remainder, char *raw_input,
+	char **raw_input_ptr, char *line)
+{
 	if (end && *(end + 1))
 	{
 		remainder = ft_strdup(end + 1);
 		if (!remainder)
-		{
 			free(line);
-			return (NULL);
-		}
 		free(raw_input);
 		*raw_input_ptr = remainder;
 	}
@@ -53,7 +58,7 @@ char	*extract_line(char **raw_input_ptr)
 		free(raw_input);
 		*raw_input_ptr = NULL;
 	}
-	return (line);
+	return;
 }
 
 /* Reads from the file descriptor and appends to the existing buffer.
@@ -70,15 +75,9 @@ char	*read_and_update(int fd, char *raw_input_data)
 		return (NULL);
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read < 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return (free(buffer), NULL);
 	if (bytes_read == 0)
-	{
-		free(buffer);
-		return (raw_input_data);
-	}
+		return (free(buffer), raw_input_data);
 	buffer[bytes_read] = '\0';
 	if (!raw_input_data)
 		temp = ft_strdup(buffer);
@@ -97,24 +96,24 @@ char	*get_next_line(int fd)
 {
 	static char	*raw_input_data;
 	char		*line;
+	char		*read_done;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	
-	if (!raw_input_data || !ft_strchr(raw_input_data, '\n'))
+	while (!raw_input_data || !ft_strchr(raw_input_data, '\n'))
 	{
-		while (1)
+		read_done = read_and_update(fd, raw_input_data);
+		if (!read_done)
 		{
-			raw_input_data = read_and_update(fd, raw_input_data);
-			if (!raw_input_data)
-				return (NULL);
-			if (!*raw_input_data)
-				break;
-			if (ft_strchr(raw_input_data, '\n'))
-				break;
+			if (raw_input_data)
+				free(raw_input_data);
+			raw_input_data = NULL;
+			return (NULL);
 		}
+		if (read_done == raw_input_data && !ft_strchr(raw_input_data, '\n'))
+			break ;
+		raw_input_data = read_done;
 	}
-	
 	if (!raw_input_data || !*raw_input_data)
 	{
 		if (raw_input_data)
@@ -124,7 +123,6 @@ char	*get_next_line(int fd)
 		}
 		return (NULL);
 	}
-	
 	line = extract_line(&raw_input_data);
 	return (line);
 }
