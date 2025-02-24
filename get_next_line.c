@@ -133,3 +133,23 @@ char	*get_next_line(int fd)
 	line = extract_line(&raw_input_data);
 	return (line);
 }
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	fd = open("test.txt", O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		printf("Error opening file");
+// 		return (1);
+// 	}
+// 	line = get_next_line(fd);
+// 	while (line != NULL)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	return (0);
+// }
