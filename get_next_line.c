@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 09:00:30 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/24 17:07:30 by vhacman          ###   ########.fr       */
+/*   Created: 2025/02/17 08:20:00 by vhacman           #+#    #+#             */
+/*   Updated: 2025/02/24 23:00:10 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,45 @@
 ** Line returned includes '\n' if present. */
 char	*extract_line(char **raw_input_ptr)
 {
-	char	*line;
-	char	*end;
-	size_t	line_len;
-	char	*remainder;
-	char	*raw_input;
+	char		*line;
+	t_line_data	data;
+	size_t		line_len;
 
 	if (!raw_input_ptr || !*raw_input_ptr || !**raw_input_ptr)
 		return (NULL);
-	raw_input = *raw_input_ptr;
-	end = ft_strchr(raw_input, '\n');
-	if (end)
-		line_len = end - raw_input + 1;
+	data.raw_input = *raw_input_ptr;
+	data.raw_input_ptr = raw_input_ptr;
+	data.end = ft_strchr(data.raw_input, '\n');
+	data.remainder = NULL;
+	if (data.end)
+		line_len = data.end - data.raw_input + 1;
 	else
-		line_len = ft_strlen(raw_input);
+		line_len = ft_strlen(data.raw_input);
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
-	ft_strncpy(line, raw_input, line_len);
+	ft_strncpy(line, data.raw_input, line_len);
 	line[line_len] = '\0';
-	remainder = NULL;
-	extract_line_helper(end, remainder, raw_input, raw_input_ptr, line);
+	extract_line_helper(data, line);
 	return (line);
 }
 
-void	extract_line_helper(char *end, char *remainder, char *raw_input,
-	char **raw_input_ptr, char *line)
+/* Function to handle cleanup after extracting line */
+void	extract_line_helper(t_line_data data, char *line)
 {
-	if (end && *(end + 1))
+	if (data.end && *(data.end + 1))
 	{
-		remainder = ft_strdup(end + 1);
-		if (!remainder)
+		data.remainder = ft_strdup(data.end + 1);
+		if (!data.remainder)
 			free(line);
-		free(raw_input);
-		*raw_input_ptr = remainder;
+		free(data.raw_input);
+		*(data.raw_input_ptr) = data.remainder;
 	}
 	else
 	{
-		free(raw_input);
-		*raw_input_ptr = NULL;
+		free(data.raw_input);
+		*(data.raw_input_ptr) = NULL;
 	}
-	return;
 }
 
 /* Reads from the file descriptor and appends to the existing buffer.
@@ -128,7 +126,8 @@ char	*get_next_line_reader(int fd, char *raw_input_data)
 			raw_input_data = NULL;
 			return (NULL);
 		}
-		if (read_done == raw_input_data && !ft_strchr(raw_input_data, '\n'))
+		if (read_done == raw_input_data
+			&& !ft_strchr(raw_input_data, '\n'))
 			break ;
 		raw_input_data = read_done;
 	}

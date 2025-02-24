@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 16:38:26 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/22 16:38:26 by vhacman          ###   ########.fr       */
+/*   Created: 2025/02/17 08:20:00 by vhacman           #+#    #+#             */
+/*   Updated: 2025/02/24 21:21:11 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,22 @@
 #  define BUFFER_SIZE 42
 # endif
 
+typedef struct s_line_data
+{
+	char	*end;
+	char	*remainder;
+	char	*raw_input;
+	char	**raw_input_ptr;
+}	t_line_data;
+
 char		*get_next_line(int fd);
 size_t		ft_strlen(const char *str);
 char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char const *string_1, char const *string_2);
 char		*ft_strncpy(char *dest, const char *src, unsigned int n);
-void		extract_line_helper(char *end, char *remainder, char *raw_input, char **raw_input_ptr, char *line);
-char    	*get_next_line_reader(int fd, char *raw_input_data);
+void		extract_line_helper(t_line_data data, char *line);
+char		*get_next_line_reader(int fd, char *raw_input_data);
 
 //int			main(void);
 
