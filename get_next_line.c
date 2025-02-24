@@ -5,137 +5,126 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 19:05:39 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/22 19:05:39 by vhacman          ###   ########.fr       */
+/*   Created: 2025/02/22 09:00:30 by vhacman           #+#    #+#             */
+/*   Updated: 2025/02/24 17:07:30 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *s1)
-{
-	char	*s2;
-	size_t	len;
-
-	if (!s1)
-		return (NULL);
-	len = ft_strlen(s1);
-	if (len + 1 == 0)
-		return (NULL);
-	s2 = (char *)malloc(sizeof(char) * (len + 1));
-	if (!s2)
-		return (NULL);
-	ft_strcpy(s2, s1);
-	return (s2);
-}
 /* Takes a string as input and returns its first line (until '\n' or end).
 ** Modifies input string by removing extracted line from the beginning.
 ** Returns NULL if input is invalid or malloc fails.
 ** Line returned includes '\n' if present. */
-
-char	*extract_line(char *raw_input)
+char	*extract_line(char **raw_input_ptr)
 {
 	char	*line;
 	char	*end;
-	size_t	len;
-	size_t	i;
+	size_t	line_len;
+	char	*remainder;
+	char	*raw_input;
 
-	i = 0;
-	if (!raw_input || raw_input[i] == '\0')
+	if (!raw_input_ptr || !*raw_input_ptr || !**raw_input_ptr)
 		return (NULL);
+	raw_input = *raw_input_ptr;
 	end = ft_strchr(raw_input, '\n');
 	if (end)
-		len = end - raw_input + 1;
-	line = (char *)malloc(sizeof(char) * (len + 1));
+		line_len = end - raw_input + 1;
+	else
+		line_len = ft_strlen(raw_input);
+	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	ft_strncpy(line, raw_input, line_len);
+	line[line_len] = '\0';
+	if (end && *(end + 1))
 	{
-		line[i] = raw_input[i];
-		i++;
+		remainder = ft_strdup(end + 1);
+		if (!remainder)
+		{
+			free(line);
+			return (NULL);
+		}
+		free(raw_input);
+		*raw_input_ptr = remainder;
 	}
-	line[i] = '\0';
-	i = 0;
-	if (end)
-		while (raw_input[++i + (end - raw_input)])
-			raw_input[i - 1] = raw_input[i + (end - raw_input)];
-	raw_input[i - 1] = '\0';
+	else
+	{
+		free(raw_input);
+		*raw_input_ptr = NULL;
+	}
 	return (line);
 }
 
-/*The function reads up to raw_raw_input_SIZE bytes from a file descriptor,
-appends them to an existing raw_input string (if present),
-and returns the updated string. If there is no data to read,
-it returns the original string. If the raw_input string is NULL, 
-it returns the data read directly.*/
+/* Reads from the file descriptor and appends to the existing buffer.
+** Returns the updated buffer or NULL if reading fails or an error occurs.
+** Handles proper memory management for both success and error cases. */
 char	*read_and_update(int fd, char *raw_input_data)
 {
-	char	*raw_input;
-	char	*updated_data;
+	char	*buffer;
+	char	*temp;
 	int		bytes_read;
 
-	raw_input = malloc(BUFFER_SIZE + 1);
-	if (!raw_input)
-		return (free(raw_input_data), NULL);
-	bytes_read = read(fd, raw_input, BUFFER_SIZE);
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read < 0)
 	{
-		free(raw_input);
-		free(raw_input_data);
+		free(buffer);
 		return (NULL);
 	}
 	if (bytes_read == 0)
-		return (free(raw_input), raw_input_data);
-	raw_input[bytes_read] = '\0';
-	if (!raw_input_data)
-		return (raw_input);
-	updated_data = ft_strjoin(raw_input_data, raw_input);
-	free(raw_input);
-	free(raw_input_data);
-	return (updated_data);
-}
-
-char	*read_buffer(int fd, char *raw_input_data)
-{
-	char	*temp;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	temp = read_and_update(fd, raw_input_data);
-	if (!temp)
 	{
-		free(raw_input_data);
-		return (NULL);
+		free(buffer);
+		return (raw_input_data);
 	}
+	buffer[bytes_read] = '\0';
+	if (!raw_input_data)
+		temp = ft_strdup(buffer);
+	else
+		temp = ft_strjoin(raw_input_data, buffer);
+	free(buffer);
+	free(raw_input_data);
 	return (temp);
 }
 
-char   *get_next_line(int fd)
+/* Main function that reads a line from a file descriptor.
+** Returns a line ending with newline if present, otherwise the remaining text.
+** Returns NULL at EOF or if an error occurs.
+** Uses a static array to handle multiple file descriptors. */
+char	*get_next_line(int fd)
 {
 	static char	*raw_input_data;
-	char		*stored_data;
-	char		*temp;
-		
-	while (!raw_input_data || !ft_strchr(raw_input_data, '\n'))
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	
+	if (!raw_input_data || !ft_strchr(raw_input_data, '\n'))
 	{
-		temp = read_buffer(fd, raw_input_data);
-		if (!temp)
-			return (NULL);
-		raw_input_data = temp;
-		if (!ft_strchr(raw_input_data, '\n')
-			&& ft_strlen(raw_input_data) < BUFFER_SIZE)
-			break;
+		while (1)
+		{
+			raw_input_data = read_and_update(fd, raw_input_data);
+			if (!raw_input_data)
+				return (NULL);
+			if (!*raw_input_data)
+				break;
+			if (ft_strchr(raw_input_data, '\n'))
+				break;
+		}
 	}
-	stored_data = extract_line(raw_input_data);
-	if (!stored_data)
+	
+	if (!raw_input_data || !*raw_input_data)
 	{
-		free(raw_input_data);
-		raw_input_data = NULL;
+		if (raw_input_data)
+		{
+			free(raw_input_data);
+			raw_input_data = NULL;
+		}
 		return (NULL);
 	}
-	temp = ft_strdup(raw_input_data + ft_strlen(stored_data));
-	free (raw_input_data);
-	raw_input_data = temp;
-	return (stored_data);
+	
+	line = extract_line(&raw_input_data);
+	return (line);
 }

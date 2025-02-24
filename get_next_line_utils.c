@@ -12,26 +12,27 @@
 
 #include "get_next_line.h"
 
-size_t  ft_strlen(const char *str)
+/* Returns the length of a string.
+** Returns 0 if str is NULL. */
+size_t	ft_strlen(const char *str)
 {
-        int     i;
+	size_t	i;
 
-        i = 0;
-        if (!str)
-                return (0);
-        while (str[i])
-                i++;
-        return (i);
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
 }
 
-/* la funzione cerca la prima occorrenza del carattere 'c'
- nella strina 'str'. Confronta i caratteri con il carattere
- cercato, se lo trova ritorna un puntatore al carattere trovato,
- se non corrisponde allora passa al carattere successivo.
- Se il carattere trovato è quello di fine stringa,
- restituisce un puntatore al termine della stringa*/
+/* Searches for the first occurrence of character c in string str.
+** Returns a pointer to the matching character or NULL if not found.
+** Also returns NULL if str is NULL. */
 char	*ft_strchr(const char *str, int c)
 {
+	if (!str)
+		return (NULL);
 	while (*str)
 	{
 		if (*str == (char)c)
@@ -40,45 +41,74 @@ char	*ft_strchr(const char *str, int c)
 	}
 	if ((char)c == '\0')
 		return ((char *)str);
-	return (0);
+	return (NULL);
 }
 
-char	*ft_strcpy(char *dest, const char *src)
+/* Creates a duplicate of string s1.
+** Returns NULL if s1 is NULL or if memory allocation fails. */
+char	*ft_strdup(const char *s1)
 {
-	int	i;
+	char	*s2;
+	size_t	len;
 
-	i = 0;
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	s2 = (char *)malloc(sizeof(char) * (len + 1));
+	if (!s2)
+		return (NULL);
+	ft_strncpy(s2, s1, len);
+	s2[len] = '\0';
+	return (s2);
 }
 
+/* Concatenates string_1 and string_2 into a new string.
+** Returns NULL if both inputs are NULL or if memory allocation fails.
+** Properly handles cases where one input is NULL. */
 char	*ft_strjoin(char const *string_1, char const *string_2)
 {
 	size_t	i;
 	size_t	j;
-        size_t  len_1;
-        size_t  len_2;
+	size_t	len_1;
+	size_t	len_2;
 	char	*new_str;
 
-	if (!string_1 || !string_2)
+	if (!string_1 && !string_2)
 		return (NULL);
-        len_1 = ft_strlen(string_1);
-        len_2 = ft_strlen(string_2);
+	len_1 = ft_strlen(string_1);
+	len_2 = ft_strlen(string_2);
+	
 	new_str = (char *)malloc(sizeof(char) * (len_1 + len_2 + 1));
 	if (!new_str)
 		return (NULL);
+	
 	i = 0;
 	j = 0;
-	while (string_1[i])
+	while (i < len_1)
 		new_str[j++] = string_1[i++];
 	i = 0;
-	while (string_2[i])
-	        new_str[j++] = string_2[i++];
+	while (i < len_2)
+		new_str[j++] = string_2[i++];
 	new_str[j] = '\0';
 	return (new_str);
+}
+
+/* Copies up to n characters from src to dest, ensuring null-termination.
+** Returns the original dest pointer for chaining. */
+char	*ft_strncpy(char *dest, const char *src, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (src[i] != '\0' && i < n)
+	{
+		dest[i] = src[i];
+		++i;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }
