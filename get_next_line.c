@@ -12,10 +12,6 @@
 
 #include "get_next_line.h"
 
-/* Takes a string as input and returns its first line (until '\n' or end).
-** Modifies input string by removing extracted line from the beginning.
-** Returns NULL if input is invalid or malloc fails.
-** Line returned includes '\n' if present. */
 char	*extract_line(char **raw_input_ptr)
 {
 	char		*line;
@@ -41,7 +37,6 @@ char	*extract_line(char **raw_input_ptr)
 	return (line);
 }
 
-/* Function to handle cleanup after extracting line */
 void	extract_line_helper(t_line_data data, char *line)
 {
 	if (data.end && *(data.end + 1))
@@ -59,9 +54,6 @@ void	extract_line_helper(t_line_data data, char *line)
 	}
 }
 
-/* Reads from the file descriptor and appends to the existing buffer.
-** Returns the updated buffer or NULL if reading fails or an error occurs.
-** Handles proper memory management for both success and error cases. */
 char	*read_and_update(int fd, char *raw_input_data)
 {
 	char	*buffer;
@@ -85,11 +77,6 @@ char	*read_and_update(int fd, char *raw_input_data)
 	free(raw_input_data);
 	return (temp);
 }
-
-/* Main function that reads a line from a file descriptor.
-** Returns a line ending with newline if present, otherwise the remaining text.
-** Returns NULL at EOF or if an error occurs.
-** Uses a static array to handle multiple file descriptors. */
 
 char	*get_next_line_reader(int fd, char *raw_input_data)
 {
