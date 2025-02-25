@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:46 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/25 12:44:25 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/25 12:53:10 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t	ft_strlen(const char *s)a
+size_t	ft_strlen(const char *s)
 {
 	size_t	len;
 

@@ -48,7 +48,7 @@ char	*extract_line(char **raw_input_ptr)
 		line_len = data.end - data.raw_input + 1;
 	else
 		line_len = ft_strlen(data.raw_input);
-	line = (char *)malloc(sizeof(char)*(line_len + 1));
+	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
 	ft_strncpy(line, data.raw_input, line_len);
