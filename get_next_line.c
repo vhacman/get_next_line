@@ -12,26 +12,12 @@
 
 #include "get_next_line.h"
 
-/*Questa funzione estrae una riga (fino al carattere newline incluso,
-se presente) dal buffer di input fornito. Restituisce la riga estratta
-come una nuova stringa allocata e aggiorna il puntatore del buffer originale
-per puntare ai dati rimanenti.
-Parametri:
-raw_input_ptr: Puntatore a un puntatore al buffer di input grezzo.
-Verrà aggiornato per puntare alla riga successiva dopo 'estrazione.
-Valore di ritorno:
-Una stringa appena allocata contenente la riga estratta, o NULL se:
-- I parametri di input non sono validi (puntatore NULL)
-- Il buffer di input è vuoto
-- L'allocazione di memoria fallisce
-Note:
-- La funzione gestisce input sia terminati da newline che non terminati 
-da newline(nel secondo caso viene trattato come l'ultima riga di input)
-- Il chiamante è responsabile di liberare la stringa restituita
-- La funzione utilizza le funzioni ausiliarie ft_strchr, ft_strlen 
-e ft_strncpy
-- La funzione utilizza una funzione ausiliaria extract_line_helper 
-il raw_input_ptr dopo l'estrazione  */
+/* Estrae una riga dal buffer di input fino al newline (\n) incluso,
+ * se presente. 
+ * Se non c'è un newline, estrae tutta la riga fino alla fine del buffer. 
+ * Aggiorna il puntatore del buffer originale per puntare ai dati rimanenti.
+ * Restituisce la riga estratta o NULL in caso di errore o buffer vuoto. 
+ * La stringa restituita deve essere liberata dal chiamante.*/
 char	*extract_line(char **raw_input_ptr)
 {
 	char		*line;
@@ -57,30 +43,14 @@ char	*extract_line(char **raw_input_ptr)
 	return (line);
 }
 
-/*extract_line_helper - Funzione ausiliaria per gestire il buffer
-dopo l'estrazione di una riga. Questa funzione gestisce la pulizia 
-e l'aggiornamento del buffer di input dopo che
-una riga è stata estratta dalla funzione principale extract_line. 
-*Si occupa di:
-Gestire il testo rimanente dopo la riga estratta
-Liberare il buffer originale
-Aggiornare il puntatore per puntare ai dati rimanenti o a NULL
-Parametri:
-data: Struttura contenente tutti i dati necessari
-(puntatori al buffer, posizione
-della fine riga, ecc.)
-line: La riga estratta (per liberarla in caso di
-errore nell'allocazione del remainder)
-Note:
-- Se c'è del testo dopo il carattere newline, 
-questo viene duplicato in un nuovo buffer
-(data.remainder) e il puntatore raw_input_ptr viene aggiornato 
-per puntare a questo
-- Se non c'è testo dopo il newline o se non c'è un newline,
-il puntatore viene impostato a NULL
-- Il buffer originale (data.raw_input) viene sempre liberato
-- In caso di errore nell'allocazione del remainder, viene liberata
-anche la riga estratta */
+/* Gestisce il buffer dopo l'estrazione di una riga. 
+ * Si occupa di liberare il buffer originale, aggiornare il puntatore 
+ * per i dati rimanenti e gestire il testo dopo il newline (se presente). 
+ * Se c'è testo rimanente, viene duplicato in un nuovo buffer
+ * e il puntatore aggiornato. Se non c'è testo rimanente
+ * o se non c'è un newline, il puntatore viene impostato a NULL. 
+ * La riga estratta viene liberata in caso
+ * di errore nell'allocazione del remainder.*/
 void	extract_line_helper(t_line_data data, char *line)
 {
 	if (data.end && *(data.end + 1))
@@ -98,31 +68,15 @@ void	extract_line_helper(t_line_data data, char *line)
 	}
 }
 
-/*read_and_update - Legge dati da un file descriptor e aggiorna 
-il buffer di input. Questa funzione legge un blocco di dati 
-dal file descriptor specificato e lo aggiunge al buffer di input 
-esistente (se presente). Gestisce
-l'allocazione della memoria e la concatenazione dei dati.
-Parametri:
-fd: File descriptor da cui leggere i dati
-raw_input_data: Buffer di input esistente (può essere NULL)
-Valore di ritorno:
-Un puntatore al buffer aggiornato contenente tutti i dati, o NULL se:
-- L'allocazione di memoria fallisce
-- La lettura dal file descriptor fallisce
-Se non ci sono nuovi dati da leggere (EOF), restituisce il buffer originale
-Note:
-- La funzione utilizza una dimensione di buffer definita da BUFFER_SIZE
-- Il buffer originale viene liberato dopo che i suoi contenuti sono stati
-opiati nel nuovo buffer (tranne in caso di errore o EOF)
-- La funzione utilizza ft_strdup per creare un nuovo buffer 
-se raw_input_data è NULL
-- La funzione utilizza ft_strjoin per concatenare i dati esistenti 
-con i nuovi */
+/* Legge dati da un file descriptor e aggiorna il buffer di input.
+ * Se il buffer esiste, i dati vengono concatenati, altrimenti viene 
+ * creato un nuovo buffer. Ritorna il buffer aggiornato o NULL
+ * in caso di errore o EOF. Libera il buffer originale 
+ * se non ci sono errori.*/
 char	*read_and_update(int fd, char *raw_input_data)
 {
 	char	*buffer;
-	char	*temp;
+	char	*new_buffer;
 	int		bytes_read;
 
 	buffer = malloc(BUFFER_SIZE + 1);
@@ -135,32 +89,18 @@ char	*read_and_update(int fd, char *raw_input_data)
 		return (free(buffer), raw_input_data);
 	buffer[bytes_read] = '\0';
 	if (!raw_input_data)
-		temp = ft_strdup(buffer);
+		new_buffer = ft_strdup(buffer);
 	else
-		temp = ft_strjoin(raw_input_data, buffer);
+		new_buffer = ft_strjoin(raw_input_data, buffer);
 	free(buffer);
 	free(raw_input_data);
-	return (temp);
+	return (new_buffer);
 }
 
-/* get_next_line_reader - Legge dati da un file descriptor fino a trovare 
-un newline o EOF.
-Questa funzione è parte dell'implementazione di get_next_line e si occupa di
-leggere dati dal file descriptor specificato fino a quando non viene trovato
-un carattere newline ('\n') o viene raggiunta la fine del file (EOF).
-Parametri:
-fd: File descriptor da cui leggere i dati
-raw_input_data: Buffer di input esistente (può essere NULL)
-Valore di ritorno:
-Un puntatore al buffer contenente tutti i dati letti fino al newline o EOF,
-o NULL se si verifica un errore durante la lettura
-Note:
-- La funzione continua a leggere in un ciclo fino a quando non 
- 		trova un newline o raggiunge la fine del file
-- Utilizza read_and_update per leggere blocchi di dati dal file descriptor
-- Gestisce casi di errore liberando la memoria allocata
-- Il controllo "read_done == raw_input_data" determina se
- 		 è stata raggiunta la fine del file (nessun nuovo dato letto)*/
+/* Legge dati da un file descriptor fino a trovare un newline o EOF.
+ * Continua a leggere finché non trova un newline o la fine del 
+ * file, utilizzando read_and_update per leggere i dati.
+ * Ritorna il buffer con i dati letti o NULL in caso di errore.*/
 char	*get_next_line_reader(int fd, char *raw_input_data)
 {
 	char	*read_done;
@@ -183,26 +123,11 @@ char	*get_next_line_reader(int fd, char *raw_input_data)
 	return (raw_input_data);
 }
 
-/*get_next_line - Legge una riga da un file descriptor
-Questa funzione legge una riga da un file descriptor specificato e la
-restituisce come una stringa terminata da null. Ad ogni chiamata successiva
-con lo stesso file descriptor, restituisce la riga successiva.
-Parametri:
-  fd: File descriptor da cui leggere
-Valore di ritorno:
-Una stringa contenente la riga letta, o NULL se:
-- Il parametro fd è invalido (negativo)
-- BUFFER_SIZE è impostato a un valore non positivo
-- La fine del file è stata raggiunta e non ci sono più dati da leggere
-- Si è verificato un errore durante la lettura
-Note:
-- Utilizza una variabile statica raw_input_data per mantenere i dati
- 		tra le chiamate. 
--Chiama get_next_line_reader per leggere dati fino a un newline o EOF
-- Chiama extract_line per estrarre una singola riga dal buffer
--La riga restituita deve essere liberata dal chiamante quando non è
- 		più necessaria
-Gestisce correttamente la pulizia della memoria in caso di errore o EOF*/
+/* Legge una riga da un file descriptor e la restituisce come 
+ * stringa terminata da null. Usa raw_input_data per mantenere 
+ * i dati tra le chiamate, legge con get_next_line_reader e 
+ * estrae la riga con extract_line. Ritorna NULL in caso 
+ * di errore, EOF o se i parametri sono invalidi.*/
 char	*get_next_line(int fd)
 {
 	static char	*raw_input_data;

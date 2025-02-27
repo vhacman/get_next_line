@@ -6,26 +6,12 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:39 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/25 12:51:47 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:59:20 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-/* extract_line - Estrae una singola riga da un buffer di input grezzo
- * Questa funzione estrae una riga (fino al carattere newline incluso,
- * se presente) dal buffer di input fornito. Restituisce la riga estratta
- * come una nuova stringa allocata e aggiorna il puntatore del buffer originale
- * per puntare ai dati rimanenti.
- * Parametri:
- *   raw_input_ptr: Puntatore a un puntatore al buffer di input grezzo.
- * Verrà aggiornato per puntare alla riga successiva dopo l'estrazione.
- * Valore di ritorno:
- *   Una stringa appena allocata contenente la riga estratta, o NULL se:
- *   - I parametri di input non sono validi (puntatore NULL)
- *   - Il buffer di input è vuoto
- *   - L'allocazione di memoria fallisce
- */
 char	*extract_line(char **raw_input_ptr)
 {
 	char		*line;
@@ -51,11 +37,6 @@ char	*extract_line(char **raw_input_ptr)
 	return (line);
 }
 
-/* extract_line_helper - Funzione ausiliaria per gestire il buffer 
-  dopo l'estrazione di una riga  * Questa funzione gestisce
-  la pulizia e l'aggiornamento del buffer di input dopo che 
-  una riga è stata estratta. Si occupa di gestire il testo rimanente, 
-  liberare il buffer originale e aggiornare il puntatore.  */
 void	extract_line_helper(t_line_data data, char *line)
 {
 	if (data.end && *(data.end + 1))
@@ -73,11 +54,6 @@ void	extract_line_helper(t_line_data data, char *line)
 	}
 }
 
-/* read_and_update - Legge dati da un file descriptor e
-  aggiorna il buffer di input  * Questa funzione legge un blocco di 
-  dati dal file descriptor specificato
- * e lo aggiunge al buffer di input esistente (se presente).
- */
 char	*read_and_update(int fd, char *raw_input_data)
 {
 	char	*buffer;
@@ -102,11 +78,6 @@ char	*read_and_update(int fd, char *raw_input_data)
 	return (temp);
 }
 
-/* get_next_line_reader - Legge dati da un file descriptor fino 
- a trovare un newline o EOF  * Questa funzione legge dati dal
- file descriptor specificato fino a quando non viene trovato
- * un carattere newline ('\n') o viene raggiunta la fine del file (EOF).
- */
 char	*get_next_line_reader(int fd, char *raw_input_data)
 {
 	char	*read_done;
@@ -128,22 +99,15 @@ char	*get_next_line_reader(int fd, char *raw_input_data)
 	}
 	return (raw_input_data);
 }
+/* 
+ * get_next_line - Legge una riga da un file descriptor specificato e la 
+ * restituisce come una stringa. Utilizza un buffer statico per ogni file 
+ * descriptor, gestito tramite un array di puntatori fd_buffers. La funzione 
+ * chiama get_next_line_reader per leggere i dati e extract_line per estrarre 
+ * la riga. Ritorna NULL se ci sono errori o EOF. Il buffer associato al 
+ * file descriptor viene liberato se non ci sono più dati.
+ */
 
-/* get_next_line - Legge una riga da un file descriptor
- * Questa funzione legge una riga da un file descriptor specificato e la
- * restituisce come una stringa terminata da null. Ad ogni chiamata successiva
- * con lo stesso file descriptor, restituisce la riga successiva.
- * Versione bonus che supporta la lettura da più file descriptor 
- contemporaneamente  * utilizzando un array di buffer per 
- mantenere lo stato di ciascun FD.
- * Parametri:
- *   fd: File descriptor da cui leggere
- * Valore di ritorno:
- *   Una stringa contenente la riga letta, o NULL se:
- *   - Il parametro fd è invalido (negativo o >= OPEN_MAX)
- *   - BUFFER_SIZE è impostato a un valore non positivo
- *   - La fine del file è stata raggiunta e non ci sono più dati da leggere
- *   - Si è verificato un errore durante la lettura */
 char	*get_next_line(int fd)
 {
 	static char	*fd_buffers[OPEN_MAX];
@@ -171,7 +135,6 @@ char	*get_next_line(int fd)
 //     int     fd2;
 //     int     fd3;
 //     char    *line;
-
 //		fd1 = open("file1.txt", O_RDONLY);
 //		fd2 = open("file2.txt", O_RDONLY);
 //		fd3 = open("file3.txt", O_RDONLY);

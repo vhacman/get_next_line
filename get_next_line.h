@@ -48,6 +48,6 @@ char		*ft_strncpy(char *dest, const char *src, unsigned int n);
 void		extract_line_helper(t_line_data data, char *line);
 char		*get_next_line_reader(int fd, char *raw_input_data);
 
-int			main(void);
+//int			main(void);
 
 #endif
