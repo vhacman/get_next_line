@@ -1,7 +1,7 @@
 # Get Next Line (GNL)
 
 ![42 Roma Luiss](https://img.shields.io/badge/42-Roma_Luiss-green)
-![125](https://img.shields.io/badge/125-green)
+![score](https://img.shields.io/badge/125-green)
 ![Created](https://img.shields.io/badge/Created-February_2025-blue)
 ![Status](https://img.shields.io/badge/Status-Completed-violet)
 
