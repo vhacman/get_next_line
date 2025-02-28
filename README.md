@@ -1,9 +1,9 @@
 # Get Next Line (GNL)
 
 ![42 Roma Luiss](https://img.shields.io/badge/42-Roma_Luiss-green)
-![In corso](https://img.shields.io/badge/In_corso-green)
+![125](https://img.shields.io/badge/125-green)
 ![Created](https://img.shields.io/badge/Created-February_2025-blue)
-![Status](https://img.shields.io/badge/Status-in_corso-violet)
+![Status](https://img.shields.io/badge/Status-Completed-violet)
 
 ## 📖 Panoramica
 Get Next Line è una funzione sviluppata in C come parte del curriculum di 42 Roma. Questa utility permette di leggere contenuti da un file descrittore riga per riga, gestendo in modo efficiente la memoria e supportando descrittori multipli.
