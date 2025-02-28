@@ -49,6 +49,7 @@ char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char const *string_1, char const *string_2);
 char		*ft_strncpy(char *dest, const char *src, unsigned int n);
+char		*read_and_update(int fd, char *raw_input_data);
 
 //int			main(void);
 

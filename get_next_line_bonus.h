@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:44 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/28 15:08:54 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:13:43 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char		*get_next_line(int fd);
 char		*get_next_line_reader(int fd, char *raw_input_data);
 char		*extract_line(char **raw_input_ptr);
 void		extract_line_helper(t_buffer_info data, char *line);
+char		*read_and_update(int fd, char *raw_input_data);
 size_t		ft_strlen(const char *str);
 char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
