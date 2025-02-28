@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:44 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/25 12:22:35 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/28 12:06:10 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 #  define OPEN_MAX 1024
 # endif
 
-typedef struct s_line_data
+typedef struct s_buffer_info
 {
 	char	*end;
 	char	*remainder;
 	char	*raw_input;
 	char	**raw_input_ptr;
-}	t_line_data;
+}	t_buffer_info;
 
 char		*get_next_line(int fd);
 size_t		ft_strlen(const char *str);
@@ -45,6 +45,6 @@ void		ft_strncpy(char *dst, const char *src, size_t len);
 void		extract_line_helper(t_line_data data, char *line);
 char		*get_next_line_reader(int fd, char *raw_input_data);
 
-int			main(void);
+//int			main(void);
 
 #endif

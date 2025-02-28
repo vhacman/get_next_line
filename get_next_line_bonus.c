@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:39 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/27 19:59:20 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/28 12:10:09 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*extract_line(char **raw_input_ptr)
 	return (line);
 }
 
-void	extract_line_helper(t_line_data data, char *line)
+void	extract_line_helper(t_buffer_info data, char *line)
 {
 	if (data.end && *(data.end + 1))
 	{
@@ -128,35 +128,35 @@ char	*get_next_line(int fd)
 	line = extract_line(&fd_buffers[fd]);
 	return (line);
 }
-
-// int main(void)
-// {
-//     int     fd1;
-//     int     fd2;
-//     int     fd3;
-//     char    *line;
-//		fd1 = open("file1.txt", O_RDONLY);
-//		fd2 = open("file2.txt", O_RDONLY);
-//		fd3 = open("file3.txt", O_RDONLY);
-//		if (fd1 == -1 || fd2 == -1 || fd3 == -1)
-//     {
-//         printf("Errore nell'apertura dei file\n");
-//         return (1);
-//     }
-//		line = get_next_line(fd1);
-//		printf("File 1: %s", line);
-//		ree(line);
-//		line = get_next_line(fd2);
-//		printf("File 2: %s", line);
-//		free(line);
-//		line = get_next_line(fd3);
-//		printf("File 3: %s", line);
-//		free(line);
-//		line = get_next_line(fd1);
-//		printf("File 1: %s", line);
-//		free(line);
-//		close(fd1);
-//		close(fd2);
-//		close(fd3);
-//     return (0);
-// }
+/*
+int main(void)
+{
+	int     fd1;
+    int     fd2;
+    int     fd3;
+    char    *line;
+	fd1 = open("file1.txt", O_RDONLY);
+	fd2 = open("file2.txt", O_RDONLY);
+	fd3 = open("file3.txt", O_RDONLY);
+	if (fd1 == -1 || fd2 == -1 || fd3 == -1)
+    {
+        printf("Errore nell'apertura dei file\n");
+        return (1);
+    }
+	line = get_next_line(fd1);
+	printf("File 1: %s", line);
+	free(line);
+	line = get_next_line(fd2);
+	printf("File 2: %s", line);
+	free(line);
+	line = get_next_line(fd3);
+	printf("File 3: %s", line);
+	free(line);
+	line = get_next_line(fd1);
+	printf("File 1: %s", line);
+	free(line);
+	close(fd1);
+	close(fd2);
+	close(fd3);
+    return (0);
+}*/
