@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:44 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/28 12:06:10 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:19:13 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 
 typedef struct s_buffer_info
 {
-	char	*end;
-	char	*remainder;
-	char	*raw_input;
-	char	**raw_input_ptr;
+	char	*end; //puntatore a '\n'
+	char	*remainder; // puntatore a dati rimanenti dopo '\n'
+	char	*raw_input; // puntatore al puntatore che gestisce il buffer
+	char	**raw_input_ptr; // puntatore al buffer che gestisce i dati grezzi
 }	t_buffer_info;
 
 char		*get_next_line(int fd);
@@ -42,7 +42,7 @@ char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char const *string_1, char const *string_2);
 void		ft_strncpy(char *dst, const char *src, size_t len);
-void		extract_line_helper(t_line_data data, char *line);
+void		extract_line_helper(t_buffer_info data, char *line);
 char		*get_next_line_reader(int fd, char *raw_input_data);
 
 //int			main(void);

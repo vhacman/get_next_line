@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:26:39 by vhacman           #+#    #+#             */
-/*   Updated: 2025/02/28 12:10:09 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:15:42 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*extract_line(char **raw_input_ptr)
 {
-	char		*line;
-	t_line_data	data;
-	size_t		line_len;
+	char			*line;
+	t_buffer_info	data;
+	size_t			line_len;
 
 	if (!raw_input_ptr || !*raw_input_ptr || !**raw_input_ptr)
 		return (NULL);
