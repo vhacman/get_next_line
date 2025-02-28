@@ -20,9 +20,9 @@
  * La stringa restituita deve essere liberata dal chiamante.*/
 char	*extract_line(char **raw_input_ptr)
 {
-	char		*line;
-	t_line_data	data;
-	size_t		line_len;
+	char			*line;
+	t_buffer_info	data;
+	size_t			line_len;
 
 	if (!raw_input_ptr || !*raw_input_ptr || !**raw_input_ptr)
 		return (NULL);
@@ -51,7 +51,7 @@ char	*extract_line(char **raw_input_ptr)
  * o se non c'è un newline, il puntatore viene impostato a NULL. 
  * La riga estratta viene liberata in caso
  * di errore nell'allocazione del remainder.*/
-void	extract_line_helper(t_line_data data, char *line)
+void	extract_line_helper(t_buffer_info data, char *line)
 {
 	if (data.end && *(data.end + 1))
 	{

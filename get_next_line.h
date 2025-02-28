@@ -31,13 +31,13 @@
 #  define BUFFER_SIZE 42
 # endif
 
-typedef struct s_line_data
+typedef struct s_buffer_info
 {
 	char	*end;
 	char	*remainder;
 	char	*raw_input;
 	char	**raw_input_ptr;
-}	t_line_data;
+}	t_buffer_info;
 
 char		*get_next_line(int fd);
 size_t		ft_strlen(const char *str);
@@ -45,7 +45,7 @@ char		*ft_strchr(const char *str, int c);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char const *string_1, char const *string_2);
 char		*ft_strncpy(char *dest, const char *src, unsigned int n);
-void		extract_line_helper(t_line_data data, char *line);
+void		extract_line_helper(t_buffer_info data, char *line);
 char		*get_next_line_reader(int fd, char *raw_input_data);
 
 //int			main(void);
