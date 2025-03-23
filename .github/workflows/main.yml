@@ -19,7 +19,7 @@ jobs:
       - name: Compile get_next_line standard
         run: |
           gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
-            -Iincludes -c src/get_next_line.c src/get_next_line_utils.c
+            -Iinclude -c src/get_next_line.c src/get_next_line_utils.c
 
       - name: Compile get_next_line bonus
         run: |
