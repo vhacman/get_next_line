@@ -12,14 +12,7 @@
 
 #include "get_next_line.h"
 
- /*ENG: Extracts a line from the input buffer up to and including the newline (\n),
- * if present. 
- * If there is no newline, extracts the entire row to the end of the buffer. 
- * Updates the original buffer pointer to point to the remaining data.
- * Returns the extracted line or NULL in case of error or empty buffer. 
- * The returned string must be freed by the caller./*
- 
-char	*extract_line(char **raw_input_ptr)
+ char	*extract_line(char **raw_input_ptr)
 {
 	char			*line;
 	t_buffer_info	data;
