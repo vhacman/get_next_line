@@ -5,19 +5,24 @@
 # Non usa Makefile
 # ===============================================================
 
-name: get_next_line
+name: GNL
 
 on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🧪 Compile get_next_line (standard)
+      - name: Compile get_next_line standard
         run: |
           gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
-              get_next_line.c get_next_line_utils.c main.c -o gnl_test
+            -Iincludes -c src/get_next_line.c src/get_next_line_utils.c
+
+      - name: Compile get_next_line bonus
+        run: |
+          gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
+            -Iincludes_bonus -c src_bonus/get_next_line_bonus.c src_bonus/get_next_line_utils_bonus.c
+
