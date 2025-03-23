@@ -12,7 +12,8 @@
 
 #include "get_next_line.h"
 
- /*ENG: Extracts a line from the input buffer up to and including the newline (\n),
+/*ENG: Extracts a line from the input buffer up to and including the
+ 	newline (\n),
  * if present. 
  * If there is no newline, extracts the entire row to the end of the buffer. 
  * Updates the original buffer pointer to point to the remaining data.
