@@ -1,0 +1,23 @@
+# ===============================================================
+# 📄 GitHub Actions Workflow - get_next_line CI
+#
+# Compila manualmente i file sorgente con gcc
+# Non usa Makefile
+# ===============================================================
+
+name: get_next_line
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧪 Compile get_next_line (standard)
+        run: |
+          gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
+              get_next_line.c get_next_line_utils.c main.c -o gnl_test
