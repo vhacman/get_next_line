@@ -12,20 +12,13 @@
 
 #include "get_next_line.h"
 
-/* ITA: Estrae una riga dal buffer di input fino al newline (\n) incluso,
- * se presente. 
- * Se non c'è un newline, estrae tutta la riga fino alla fine del buffer. 
- * Aggiorna il puntatore del buffer originale per puntare ai dati rimanenti.
- * Restituisce la riga estratta o NULL in caso di errore o buffer vuoto. 
- * La stringa restituita deve essere liberata dal chiamante.*/
-
  /*ENG: Extracts a line from the input buffer up to and including the newline (\n),
  * if present. 
  * If there is no newline, extracts the entire row to the end of the buffer. 
  * Updates the original buffer pointer to point to the remaining data.
  * Returns the extracted line or NULL in case of error or empty buffer. 
- * The returned string must be freed by the caller.*
-
+ * The returned string must be freed by the caller./*
+ 
 char	*extract_line(char **raw_input_ptr)
 {
 	char			*line;
