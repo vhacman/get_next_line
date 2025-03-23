@@ -1,4 +1,4 @@
-# 📄 Get Next Line (GNL)
+# Get Next Line 
 
 ![42 Roma Luiss](https://img.shields.io/badge/42-Roma_Luiss-green)
 ![Score](https://img.shields.io/badge/Score-125/100-brightgreen)
