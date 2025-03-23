@@ -1,5 +1,5 @@
 # Get Next Line 
-
+[![GNL](https://github.com/vhacman/get_next_line/actions/workflows/main.yml/badge.svg)](https://github.com/vhacman/get_next_line/actions/workflows/main.yml)
 ![42 Roma Luiss](https://img.shields.io/badge/42-Roma_Luiss-green)
 ![Score](https://img.shields.io/badge/Score-125/100-brightgreen)
 ![Created](https://img.shields.io/badge/Created-Febbraio_2025-blue)
