@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:36:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/06/11 13:54:29 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/06/11 14:18:03 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ char	*get_next_line(int fd)
 // 	char	*line1, *line2, *line3;
 // 	int		active1, active2, active3;
 
-// 	fd1 = open("file1.txt", O_RDONLY);
-// 	fd2 = open("file2.txt", O_RDONLY);
-// 	fd3 = open("file3.txt", O_RDONLY);
+// 	fd1 = open("file_test/file1.txt", O_RDONLY);
+// 	fd2 = open("file_test/file2.txt", O_RDONLY);
+// 	fd3 = open("file_test/file3.txt", O_RDONLY);
 // 	if (fd1 == -1 || fd2 == -1 || fd3 == -1)
 // 	{
 // 		printf("Errore nell'apertura dei file\n");

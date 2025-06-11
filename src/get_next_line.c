@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:05:43 by vhacman           #+#    #+#             */
-/*   Updated: 2025/06/11 13:46:10 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/06/11 14:18:12 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*get_next_line(int fd)
 // 	int		fd;
 // 	char	*line;
 
-// 	fd = open("test.txt", O_RDONLY);
+// 	fd = open("file_test/test.txt", O_RDONLY);
 // 	if (fd == -1)
 // 	{
 // 		printf("Error opening file");
