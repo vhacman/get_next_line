@@ -1,31 +1,6 @@
 
 ***Aggiornato il 11/06/2025***
 
-## 🤝 Contribuisci in modo rispettoso
-
-Se trovi utile questo progetto, ti invito a non clonare direttamente la repository.
-
-### ✨ Perché fare una fork?
-
-Fare una **fork**:
-
-* ti permette di avere una copia personale su cui lavorare liberamente;
-* rende trasparente il tuo interesse per il progetto;
-* mi aiuta a costruire un GitHub più professionale e tracciabile, mostrando quante persone hanno interagito realmente con il mio lavoro.
-
-> 🚀 In questo modo posso far crescere il mio profilo e migliorare come sviluppatrice.
-
-### ✅ Come procedere
-
-1. Clicca in alto a destra su **Fork**
-2. Clona la tua copia con:
-
-```bash
-git clone https://github.com/<il-tuo-username>/<nome-repo>.git
-```
-
----
-
 # Get Next Line
 
 [![GNL](https://github.com/vhacman/get_next_line/actions/workflows/main.yml/badge.svg)](https://github.com/vhacman/get_next_line/actions/workflows/main.yml)
@@ -152,6 +127,32 @@ Puoi eseguire con:
 ```bash
 ./gnl          # Per testare la versione standard
 ./gnl_bonus    # Per testare la versione bonus
+```
+
+---
+
+
+## 🤝 Contribuisci in modo rispettoso
+
+Se trovi utile questo progetto, ti invito a non clonare direttamente la repository.
+
+### ✨ Perché fare una fork?
+
+Fare una **fork**:
+
+* ti permette di avere una copia personale su cui lavorare liberamente;
+* rende trasparente il tuo interesse per il progetto;
+* mi aiuta a costruire un GitHub più professionale e tracciabile, mostrando quante persone hanno interagito realmente con il mio lavoro.
+
+> 🚀 In questo modo posso far crescere il mio profilo e migliorare come sviluppatrice.
+
+### ✅ Come procedere
+
+1. Clicca in alto a destra su **Fork**
+2. Clona la tua copia con:
+
+```bash
+git clone https://github.com/<il-tuo-username>/<nome-repo>.git
 ```
 
 ---
